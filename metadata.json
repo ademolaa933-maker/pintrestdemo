@@ -1,0 +1,6 @@
+{
+  "name": "Pinterest - Create the life you love",
+  "description": "Discover recipes, home ideas, style inspiration, and other ideas to try.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
