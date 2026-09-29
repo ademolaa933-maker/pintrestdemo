@@ -4,11 +4,18 @@ import { PinterestLogo } from "./PinterestLogo";
 import { SEARCH_SUGGESTIONS } from "../data/mockData";
 
 interface NavbarProps {
+  currentPage?: "home" | "about";
+  onNavigate?: (page: "home" | "about") => void;
   onOpenAuth: (mode: "login" | "signup") => void;
   onSearchQuery?: (query: string) => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onSearchQuery }) => {
+export const Navbar: React.FC<NavbarProps> = ({
+  currentPage = "home",
+  onNavigate,
+  onOpenAuth,
+  onSearchQuery,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -42,13 +49,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onSearchQuery }) => 
     }
   };
 
+  const handleNavClick = (e: React.MouseEvent, page: "home" | "about") => {
+    e.preventDefault();
+    if (onNavigate) {
+      onNavigate(page);
+    }
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-shadow">
       <div className="max-w-[1536px] mx-auto px-4 md:px-6 h-20 flex items-center justify-between gap-3 md:gap-6">
         
         {/* Left: Brand & Explore */}
         <div className="flex items-center gap-3 shrink-0">
-          <a href="#" className="flex items-center group py-2">
+          <a
+            href="#home"
+            onClick={(e) => handleNavClick(e, "home")}
+            className="flex items-center group py-2"
+          >
             <PinterestLogo
               size={36}
               showWordmark={true}
@@ -58,7 +77,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onSearchQuery }) => 
 
           <a
             href="#explore"
-            className="hidden sm:inline-flex items-center font-bold text-sm text-[#111] hover:bg-gray-100 px-4 py-2.5 rounded-full transition-colors"
+            onClick={(e) => handleNavClick(e, "home")}
+            className={`hidden sm:inline-flex items-center font-bold text-sm px-4 py-2.5 rounded-full transition-colors ${
+              currentPage === "home"
+                ? "bg-black text-white"
+                : "text-[#111] hover:bg-gray-100"
+            }`}
           >
             Explore
           </a>
@@ -125,7 +149,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onSearchQuery }) => 
           <nav className="hidden xl:flex items-center gap-1 text-sm font-semibold text-[#111]">
             <a
               href="#about"
-              className="px-3.5 py-2 hover:bg-gray-100 rounded-full transition-colors"
+              onClick={(e) => handleNavClick(e, "about")}
+              className={`px-3.5 py-2 rounded-full transition-colors ${
+                currentPage === "about"
+                  ? "bg-black text-white"
+                  : "hover:bg-gray-100 text-[#111]"
+              }`}
             >
               About
             </a>
@@ -184,15 +213,19 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onSearchQuery }) => 
           <div className="flex flex-col space-y-2 font-semibold text-gray-800 text-base">
             <a
               href="#explore"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="py-2.5 px-3 rounded-xl hover:bg-gray-50"
+              onClick={(e) => handleNavClick(e, "home")}
+              className={`py-2.5 px-3 rounded-xl ${
+                currentPage === "home" ? "bg-gray-100 text-black font-bold" : "hover:bg-gray-50"
+              }`}
             >
               Explore
             </a>
             <a
               href="#about"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="py-2.5 px-3 rounded-xl hover:bg-gray-50"
+              onClick={(e) => handleNavClick(e, "about")}
+              className={`py-2.5 px-3 rounded-xl ${
+                currentPage === "about" ? "bg-gray-100 text-black font-bold" : "hover:bg-gray-50"
+              }`}
             >
               About
             </a>

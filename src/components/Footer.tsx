@@ -1,6 +1,10 @@
 import React from "react";
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onNavigate?: (page: "home" | "about") => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   return (
     <footer className="bg-black text-white pt-16 pb-12 px-6 md:px-12 border-t border-neutral-900">
       <div className="max-w-[1440px] mx-auto">
@@ -10,9 +14,12 @@ export const Footer: React.FC = () => {
           <div className="col-span-2 lg:col-span-2 flex flex-col justify-between">
             <div>
               {/* Script / stylized wordmark */}
-              <span className="text-3xl font-extrabold tracking-tight text-white inline-block">
+              <button
+                onClick={() => onNavigate && onNavigate("home")}
+                className="text-3xl font-extrabold tracking-tight text-white inline-block hover:opacity-80 transition-opacity text-left"
+              >
                 Pinterest
-              </span>
+              </button>
               <p className="mt-3 text-sm text-neutral-400 max-w-sm">
                 Discover recipes, home ideas, style inspiration, and other ideas to try.
               </p>
@@ -54,12 +61,22 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-3 text-sm text-neutral-400 font-medium">
               <li>
-                <a
-                  href="#explore"
-                  className="hover:text-white transition-colors"
+                <button
+                  type="button"
+                  onClick={() => onNavigate && onNavigate("home")}
+                  className="hover:text-white transition-colors text-left"
                 >
                   Explore
-                </a>
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => onNavigate && onNavigate("about")}
+                  className="hover:text-white transition-colors text-left"
+                >
+                  About us
+                </button>
               </li>
               <li>
                 <a
