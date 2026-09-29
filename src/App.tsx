@@ -7,14 +7,17 @@ import { CollaborateFeatureSection } from "./components/CollaborateFeatureSectio
 import { VisualSearchFeatureSection } from "./components/VisualSearchFeatureSection";
 import { SignUpBannerSection } from "./components/SignUpBannerSection";
 import { AboutPage } from "./components/AboutPage";
+import { BusinessPage } from "./components/BusinessPage";
 import { Footer } from "./components/Footer";
 import { AuthModal } from "./components/AuthModal";
 import { BoardIdea } from "./data/mockData";
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<"home" | "about">(() => {
-    if (typeof window !== "undefined" && window.location.hash === "#about") {
-      return "about";
+  const [currentPage, setCurrentPage] = useState<"home" | "about" | "business">(() => {
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash;
+      if (hash === "#about") return "about";
+      if (hash === "#business" || hash === "#businesses") return "business";
     }
     return "home";
   });
@@ -29,6 +32,9 @@ export default function App() {
       if (hash === "#about") {
         setCurrentPage("about");
         window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (hash === "#business" || hash === "#businesses") {
+        setCurrentPage("business");
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } else if (hash === "#home" || hash === "#explore" || hash === "") {
         setCurrentPage("home");
       }
@@ -38,9 +44,9 @@ export default function App() {
     return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
-  const navigateTo = (page: "home" | "about") => {
+  const navigateTo = (page: "home" | "about" | "business") => {
     setCurrentPage(page);
-    window.location.hash = page === "about" ? "#about" : "#home";
+    window.location.hash = page === "about" ? "#about" : page === "business" ? "#business" : "#home";
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -73,7 +79,7 @@ export default function App() {
     showToast(`Opened "${board.title}"`);
   };
 
-  const handleAboutButtonClick = (context: string) => {
+  const handleActionClick = (context: string) => {
     showToast(`${context} selected!`);
     handleOpenAuth("signup");
   };
@@ -95,7 +101,13 @@ export default function App() {
           <AboutPage
             onOpenAuth={handleOpenAuth}
             onExploreClick={() => navigateTo("home")}
-            onButtonClick={handleAboutButtonClick}
+            onButtonClick={handleActionClick}
+          />
+        ) : currentPage === "business" ? (
+          /* Exact Business Page Design ("Our Busineses") */
+          <BusinessPage
+            onOpenAuth={handleOpenAuth}
+            onButtonClick={handleActionClick}
           />
         ) : (
           /* Home Landing Page Layout */
@@ -129,6 +141,7 @@ export default function App() {
             {/* Section 6: Full Bleed Sign Up Section */}
             <SignUpBannerSection
               onOpenLogin={() => handleOpenAuth("login")}
+              onNavigateBusiness={() => navigateTo("business")}
             />
           </>
         )}
@@ -142,6 +155,7 @@ export default function App() {
         isOpen={authModalOpen}
         initialMode={authMode}
         onClose={() => setAuthModalOpen(false)}
+        onNavigateBusiness={() => navigateTo("business")}
       />
 
       {/* Interactive Toast Notification */}

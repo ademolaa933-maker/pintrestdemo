@@ -1,7 +1,7 @@
 import React from "react";
 
 interface FooterProps {
-  onNavigate?: (page: "home" | "about") => void;
+  onNavigate?: (page: "home" | "about" | "business") => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
@@ -76,6 +76,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white transition-colors text-left"
                 >
                   About us
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => onNavigate && onNavigate("business")}
+                  className="hover:text-white transition-colors text-left"
+                >
+                  Businesses
                 </button>
               </li>
               <li>

@@ -6,12 +6,14 @@ interface AuthModalProps {
   isOpen: boolean;
   initialMode?: "login" | "signup";
   onClose: () => void;
+  onNavigateBusiness?: () => void;
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({
   isOpen,
   initialMode = "signup",
   onClose,
+  onNavigateBusiness,
 }) => {
   const [mode, setMode] = useState<"login" | "signup">(initialMode);
   const [email, setEmail] = useState("");
@@ -202,9 +204,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 )}
                 <p>
                   Are you a business?{" "}
-                  <a href="#business" className="font-bold text-black hover:underline">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      if (onNavigateBusiness) onNavigateBusiness();
+                    }}
+                    className="font-bold text-black hover:underline cursor-pointer"
+                  >
                     Get started here
-                  </a>
+                  </button>
                 </p>
               </div>
 

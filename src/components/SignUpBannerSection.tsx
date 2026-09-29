@@ -4,10 +4,12 @@ import { Check } from "lucide-react";
 
 interface SignUpBannerSectionProps {
   onOpenLogin: () => void;
+  onNavigateBusiness?: () => void;
 }
 
 export const SignUpBannerSection: React.FC<SignUpBannerSectionProps> = ({
   onOpenLogin,
+  onNavigateBusiness,
 }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -210,9 +212,15 @@ export const SignUpBannerSection: React.FC<SignUpBannerSectionProps> = ({
                       </p>
                       <p>
                         Are you a business?{" "}
-                        <a href="#business" className="font-bold text-black hover:underline">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (onNavigateBusiness) onNavigateBusiness();
+                          }}
+                          className="font-bold text-black hover:underline cursor-pointer"
+                        >
                           Get started here
-                        </a>
+                        </button>
                       </p>
                     </div>
 

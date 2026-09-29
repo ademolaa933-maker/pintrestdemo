@@ -4,8 +4,8 @@ import { PinterestLogo } from "./PinterestLogo";
 import { SEARCH_SUGGESTIONS } from "../data/mockData";
 
 interface NavbarProps {
-  currentPage?: "home" | "about";
-  onNavigate?: (page: "home" | "about") => void;
+  currentPage?: "home" | "about" | "business";
+  onNavigate?: (page: "home" | "about" | "business") => void;
   onOpenAuth: (mode: "login" | "signup") => void;
   onSearchQuery?: (query: string) => void;
 }
@@ -49,7 +49,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
   };
 
-  const handleNavClick = (e: React.MouseEvent, page: "home" | "about") => {
+  const handleNavClick = (e: React.MouseEvent, page: "home" | "about" | "business") => {
     e.preventDefault();
     if (onNavigate) {
       onNavigate(page);
@@ -160,7 +160,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             </a>
             <a
               href="#business"
-              className="px-3.5 py-2 hover:bg-gray-100 rounded-full transition-colors"
+              onClick={(e) => handleNavClick(e, "business")}
+              className={`px-3.5 py-2 rounded-full transition-colors ${
+                currentPage === "business"
+                  ? "bg-black text-white"
+                  : "hover:bg-gray-100 text-[#111]"
+              }`}
             >
               Businesses
             </a>
@@ -231,8 +236,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             </a>
             <a
               href="#business"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="py-2.5 px-3 rounded-xl hover:bg-gray-50"
+              onClick={(e) => handleNavClick(e, "business")}
+              className={`py-2.5 px-3 rounded-xl ${
+                currentPage === "business" ? "bg-gray-100 text-black font-bold" : "hover:bg-gray-50"
+              }`}
             >
               Businesses
             </a>
